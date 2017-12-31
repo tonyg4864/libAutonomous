@@ -9,5 +9,5 @@ Action.c
 >-m32bit-doubles
 >-fno-exceptions
 >defs::-std=c99
->-lm
+>-create_library
 >BOARD::ACTIVITYBOARD
