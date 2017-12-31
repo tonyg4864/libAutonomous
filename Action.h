@@ -34,4 +34,3 @@ void rampUp();
 void rampUpReverse();
 void rampDown();
 void spinRight();
-void helloworld(void) ;

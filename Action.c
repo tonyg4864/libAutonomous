@@ -161,7 +161,3 @@ void spinRight(){
   rightWheelsForward();
   leftWheelsReverse();
 }
-void helloworld(void)                            // awesome function
-{
-  print("helloworld!\n");
-}
