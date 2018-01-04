@@ -1,7 +1,7 @@
 #include "Action.h"
 
-int LEFT_SERVO_PIN = 3;
-int RIGHT_SERVO_PIN = 4;
+int LEFT_SERVO_PIN = 0;
+int RIGHT_SERVO_PIN = 3;
 int HEAD_SERVO_PIN = 19;
 int PINGER_PIN = 18;
 int V_PANT_PIN = 14;

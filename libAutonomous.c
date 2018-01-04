@@ -6,9 +6,11 @@
 #include "autonomous.h"
 #include "Action.h"
 
+//8.28 volts draw
+//.11 amps at idle draw and 5.79 amps with all 6 wheels running and 1.54 one side running .74 volts on the signal cable
 void testServo(int pin){
 
-   //print("testing servo on pin %d\n", pin);
+  print("testing servo on pin %d\n", pin);
   servo_angle(pin, 400);                         // P16 servo to 0 degrees
   pause(1000);                                // ...for 3 seconds
 //  servo_angle(pin, 900);
