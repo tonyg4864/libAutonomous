@@ -1,7 +1,7 @@
 #include "Action.h"
 
 int LEFT_SERVO_PIN = 0;
-int RIGHT_SERVO_PIN = 3;
+int RIGHT_SERVO_PIN = 4;
 int HEAD_SERVO_PIN = 19;
 int PINGER_PIN = 18;
 int V_PANT_PIN = 14;
@@ -10,7 +10,14 @@ int H_PANT_PIN = 15;
 //PWM Freq in KHz
 int HB25_FREQ = 9200;
 
-int HB25_FULL_FORWARD_MS = 2200;
+/*From https://www.parallax.com/product/29144
+Pulse Input: 1.0ms Full Reverse, 1.5ms Neutral (off), 2.0ms Full Forward
+Pulse Refresh Rate: Single Pulse Operation
+Modes: Single/Dual Motor Control(dual mode requires two HB-25s)
+Protection Circuits: Over Voltage, Over Current, Over Heating
+Fault Reset: Automatic
+Cooling: Forced Air - Ball Bearing Fan*/
+int HB25_FULL_FORWARD_MS = 2000;
 int HB25_NEUTRAL_MS = 1500;
 int HB25_FULL_REVERSE_MS = 1000;
 
@@ -76,6 +83,11 @@ void leftWheelsForward(){
 
 }
 
+void _leftWheelsForward(int millis){
+    pwm_set(LEFT_SERVO_PIN,0,millis);
+    pause(20);
+}
+
 void stopLeftWheels(){
   pwm_set(LEFT_SERVO_PIN,0,HB25_NEUTRAL_MS);
   pause(20);
@@ -87,13 +99,29 @@ void leftWheelsReverse(){
   pause(20);
 }
 
+void _leftWheelsReverse(int millis){
+
+  pwm_set(LEFT_SERVO_PIN,0,millis);
+  pause(20);
+}
+
 void rightWheelsForward(){
    pwm_set(RIGHT_SERVO_PIN,1,HB25_FULL_FORWARD_MS);
    pause(20);
 }
 
+void _rightWheelsForward(int millis){
+   pwm_set(RIGHT_SERVO_PIN,1,millis);
+   pause(20);
+}
+
 void rightWheelsReverse(){
   pwm_set(RIGHT_SERVO_PIN,1,HB25_FULL_REVERSE_MS);
+  pause(20);
+}
+
+void _rightWheelsReverse(int millis){
+  pwm_set(RIGHT_SERVO_PIN,1,millis);
   pause(20);
 }
 
@@ -104,16 +132,16 @@ void stopRightWheels(){
 
 void driveForward(){
   print("driving forward\n");
-  leftWheelsForward();
-  rightWheelsForward();
+  _leftWheelsForward(HB25_FULL_FORWARD_MS - 250);
+  _rightWheelsForward(HB25_FULL_FORWARD_MS - 250);
   pause(20);
 }
 
 void driveReverse(){
 
   print("driving reverse\n");
-  leftWheelsReverse();
-  rightWheelsReverse();
+  _leftWheelsReverse(HB25_FULL_REVERSE_MS + 250);
+  _rightWheelsReverse(HB25_FULL_REVERSE_MS + 250);
   pause(20);
 }
 
@@ -158,6 +186,13 @@ void rampDown(){
 }
 
 void spinRight(){
-  rightWheelsForward();
-  leftWheelsReverse();
+  _leftWheelsForward(HB25_FULL_FORWARD_MS - 150);
+  //_rightWheelsReverse(HB25_FULL_REVERSE_MS + 300);
+  //leftWheelsReverse();
+}
+
+void spinLeft(){
+  _rightWheelsForward(HB25_FULL_FORWARD_MS - 150);
+  //_leftWheelsReverse(HB25_FULL_REVERSE_MS + 300);
+  //leftWheelsReverse();
 }
