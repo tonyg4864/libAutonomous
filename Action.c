@@ -2,8 +2,8 @@
 
 int LEFT_SERVO_PIN = 0;
 int RIGHT_SERVO_PIN = 4;
-int HEAD_SERVO_PIN = 19;
-int PINGER_PIN = 18;
+int HEAD_SERVO_PIN = 17;
+int PINGER_PIN = 12;
 int V_PANT_PIN = 14;
 int H_PANT_PIN = 15;
 
@@ -20,6 +20,9 @@ Cooling: Forced Air - Ball Bearing Fan*/
 int HB25_FULL_FORWARD_MS = 2000;
 int HB25_NEUTRAL_MS = 1500;
 int HB25_FULL_REVERSE_MS = 1000;
+
+int SLOW_DOWN_MS = 350;
+int TURN_SLOW_DOWN_MS = 150;
 
 void printPinInfo(int pin){
   /*The pin's state. If the pin is an output, 1 = 3.3 V
@@ -132,16 +135,15 @@ void stopRightWheels(){
 
 void driveForward(){
   print("driving forward\n");
-  _leftWheelsForward(HB25_FULL_FORWARD_MS - 250);
-  _rightWheelsForward(HB25_FULL_FORWARD_MS - 250);
+  _leftWheelsForward(HB25_FULL_FORWARD_MS - SLOW_DOWN_MS);
+  _rightWheelsForward(HB25_FULL_FORWARD_MS - SLOW_DOWN_MS);
   pause(20);
 }
 
 void driveReverse(){
-
   print("driving reverse\n");
-  _leftWheelsReverse(HB25_FULL_REVERSE_MS + 250);
-  _rightWheelsReverse(HB25_FULL_REVERSE_MS + 250);
+  _leftWheelsReverse(HB25_FULL_REVERSE_MS + SLOW_DOWN_MS);
+  _rightWheelsReverse(HB25_FULL_REVERSE_MS + SLOW_DOWN_MS);
   pause(20);
 }
 
@@ -186,13 +188,13 @@ void rampDown(){
 }
 
 void spinRight(){
-  _leftWheelsForward(HB25_FULL_FORWARD_MS - 150);
+  _leftWheelsForward(HB25_FULL_FORWARD_MS - TURN_SLOW_DOWN_MS);
   //_rightWheelsReverse(HB25_FULL_REVERSE_MS + 300);
   //leftWheelsReverse();
 }
 
 void spinLeft(){
-  _rightWheelsForward(HB25_FULL_FORWARD_MS - 150);
+  _rightWheelsForward(HB25_FULL_FORWARD_MS - TURN_SLOW_DOWN_MS);
   //_leftWheelsReverse(HB25_FULL_REVERSE_MS + 300);
   //leftWheelsReverse();
 }
