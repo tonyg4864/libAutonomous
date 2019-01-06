@@ -2,8 +2,8 @@
 
 int LEFT_SERVO_PIN = 0;
 int RIGHT_SERVO_PIN = 4;
-int HEAD_SERVO_PIN = 19;
-int PINGER_PIN = 18;
+int HEAD_SERVO_PIN = 17;
+int PINGER_PIN = 12;
 int V_PANT_PIN = 14;
 int H_PANT_PIN = 15;
 
