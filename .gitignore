@@ -54,3 +54,6 @@ dkms.conf
 #simpleIDE
 cmm/*
 *.binary
+
+#ide
+.idea

@@ -3,6 +3,12 @@ Autonomous.h
 Autonomous.c
 Action.h
 Action.c
+-I ./../libServoMotion
+-L ./../libServoMotion
+-I ./../libPinger
+-L ./../libPinger
+-I ./../../Motor/libservo
+-L ./../../Motor/libservo
 >compiler=C
 >memtype=cmm main ram compact
 >optimize=-Os
@@ -10,4 +16,5 @@ Action.c
 >-fno-exceptions
 >defs::-std=c99
 >-create_library
+>linker::-lsimpletext -lServo -lservo
 >BOARD::ACTIVITYBOARD
