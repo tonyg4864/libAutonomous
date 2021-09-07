@@ -61,28 +61,31 @@ void driveAutonomously(){
 int main(){
   //Setup fdserial
   hb25InitAll();
-  xbee = fdserial_open(9, 8, 0, 9600);
-  writeChar(xbee, CLS);
-  dprint(xbee, "Click this terminal, \n");
-  dprint(xbee, "and type on keybaord...\n\n");
+  //xbee = fdserial_open(9, 8, 0, 9600);
+  //writeChar(xbee, CLS);
+  //dprint(xbee, "Click this terminal, \n");
+  //dprint(xbee, "and type on keybaord...\n\n");
 
   int frontDistance = 0;
-  char userInput;
+  int userInput;
 
   while(1){
     userInput = -1;
-    userInput = fdserial_rxChar(xbee);
+    //userInput = fdserial_rxChar(xbee);
+    print("Enter reps: ");
+    scan("%d\n", &userInput); // Get input from terminal
     if(userInput != -1){
-        dprint(xbee, "You typed: %c\n", userInput);
-        if(userInput == '1'){
+        //dprint(xbee, "You typed: %c\n", userInput);
+        if(userInput == 1){
+          print('Driving forward');
           driveForward();
         }else if(userInput == '2'){
           testServo(17);
         }else if(userInput == '3'){
           testPing(12);
-        }else if(userInput == '4'){
+        }else if(userInput == 4){
           driveAutonomously();
-        }else if(userInput == '9'){
+        }else if(userInput == 9){
           //Stop Driving
           stop();
         }          

@@ -55,7 +55,7 @@ void hb25Init(int pin){
   set_direction(pin, 0);
   
   while( get_state(pin) == 0){
-    //print("Wating for hb-25 to start...\n");
+    print("Wating for hb-25 to start...\n");
   } 
 
   sendLowSignal(pin);

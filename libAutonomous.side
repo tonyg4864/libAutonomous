@@ -15,6 +15,5 @@ Action.c
 >-m32bit-doubles
 >-fno-exceptions
 >defs::-std=c99
->-create_library
 >linker::-lsimpletext -lServo -lservo
 >BOARD::ACTIVITYBOARD
