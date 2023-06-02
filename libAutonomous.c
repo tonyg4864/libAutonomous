@@ -1,6 +1,12 @@
 /*
   Awesome Messages.c
-*/                    // Include simple tools
+  WX ModuleIP Address in AP+STA mode:
+  - http://192.168.4.1/index.html
+  - http://esp8266.nonet/wifi/wifi.html
+    IP with Joined Network:
+     - 192.168.4.163
+*/                    
+// Include simple tools
 //#include "Autonomous.h"
 #include "Action.h"
 #include "fdserial.h"
@@ -8,7 +14,6 @@
 #include "ServoController.h"
 #include <stdbool.h>
 
-fdserial *xbee;
 int FORWARD_DISTANCE_THRESHOLD = 100;
 int DIRECTION_CHANGE_DURATION_MS = 1000;
 //8.28 volts draw
@@ -65,10 +70,6 @@ char* getCmdPromptMsg(){
 int main(){
   //Setup fdserial
   hb25InitAll();
-  //xbee = fdserial_open(9, 8, 0, 9600);
-  //writeChar(xbee, CLS);
-  //dprint(xbee, "Click this terminal, \n");
-  //dprint(xbee, "and type on keybaord...\n\n");
 
   int frontDistance = 0;
   int userInput;
