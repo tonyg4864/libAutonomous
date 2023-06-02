@@ -58,6 +58,10 @@ void driveAutonomously(){
     }
 }
 
+char* getCmdPromptMsg(){
+  return "Enter command to run:";
+}  
+
 int main(){
   //Setup fdserial
   hb25InitAll();
@@ -72,7 +76,7 @@ int main(){
   while(1){
     userInput = -1;
     //userInput = fdserial_rxChar(xbee);
-    print("Enter reps: ");
+    print(getCmdPromptMsg());
     scan("%d\n", &userInput); // Get input from terminal
     if(userInput != -1){
         //dprint(xbee, "You typed: %c\n", userInput);
