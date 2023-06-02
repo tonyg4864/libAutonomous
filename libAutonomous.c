@@ -13,6 +13,10 @@
 #include "PingerController.h"
 #include "ServoController.h"
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define TABLE_SIZE 5
 
 int FORWARD_DISTANCE_THRESHOLD = 100;
 int DIRECTION_CHANGE_DURATION_MS = 1000;
@@ -63,13 +67,71 @@ void driveAutonomously(){
     }
 }
 
+
+//Hashmap TODO: factor out
+struct node {
+    int key;
+    char* value;
+    struct node* next;
+};
+
+struct node* hash_table[TABLE_SIZE];
+
+int hash_function(int key) {
+    return key % TABLE_SIZE;
+}
+
+void insert(int key, char* value) {
+    int index = hash_function(key);
+    struct node* new_node = (struct node*) malloc(sizeof(struct node));
+    new_node->key = key;
+    new_node->value = (char*) malloc(strlen(value) + 1);
+    strcpy(new_node->value, value);
+    new_node->next = NULL;
+
+    if (hash_table[index] == NULL) {
+        hash_table[index] = new_node;
+    } else {
+        struct node* current_node = hash_table[index];
+        while (current_node->next != NULL) {
+            current_node = current_node->next;
+        }
+        current_node->next = new_node;
+    }
+}
+
+char* search(int key) {
+    int index = hash_function(key);
+    struct node* current_node = hash_table[index];
+    while (current_node != NULL) {
+        if (current_node->key == key) {
+            return current_node->value;
+        }
+        current_node = current_node->next;
+    }
+    return NULL; // Key not found
+} 
+/////////////////////////////
+
 char* getCmdPromptMsg(){
+  insert(0, "Stop Driving.");
+  insert(1, "Drive forward.");
+  insert(2, "Test Servo");
+  insert(3, "Test Pinger");
+  insert(4, "Drive Autonomously");
+  
+  print("Type a command from one of the following options:\n");
+  for(int i = 0; i < TABLE_SIZE; i++){
+    print("%d:%s\n", i, search(i));
+  }    
+
   return "Enter command to run:";
 }  
 
 int main(){
   //Setup fdserial
   hb25InitAll();
+  print("hb-25 initialization completed.\n");
 
   int frontDistance = 0;
   int userInput;
