@@ -120,10 +120,16 @@ char* getCmdPromptMsg(){
   insert(3, "Test Pinger");
   insert(4, "Drive Autonomously");
   
-  print("Type a command from one of the following options:\n");
+  char *intro = "Type a command from one of the following options:\n";
+  char fullMsg[500] = "";
+  strcat(fullMsg, intro);
+
   for(int i = 0; i < TABLE_SIZE; i++){
-    print("%d:%s\n", i, search(i));
-  }    
+    char str[100];
+    sprintf(str, "%d: %s\n", i, search(i));
+    strcat(fullMsg, str);
+  }
+  print(fullMsg);
 
   return "Enter command to run:";
 }  
