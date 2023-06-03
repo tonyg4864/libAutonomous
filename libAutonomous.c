@@ -119,23 +119,23 @@ char* getCmdPromptMsg(){
   insert(2, "Test Servo");
   insert(3, "Test Pinger");
   insert(4, "Drive Autonomously");
+  insert(5, "Exit");
   
   char *intro = "Type a command from one of the following options:\n";
   char fullMsg[500] = "";
   strcat(fullMsg, intro);
 
-  for(int i = 0; i < TABLE_SIZE; i++){
+  for(int i = 0; i <= TABLE_SIZE; i++){
     char str[100];
     sprintf(str, "%d: %s\n", i, search(i));
     strcat(fullMsg, str);
   }
-  print(fullMsg);
-
-  return "Enter command to run:";
+  return fullMsg;
 }  
 
 int main(){
   //Setup fdserial
+  print("hb-25 initialization starting...\n");
   hb25InitAll();
   print("hb-25 initialization completed.\n");
 
@@ -144,12 +144,16 @@ int main(){
 
   while(1){
     userInput = -1;
-    //userInput = fdserial_rxChar(xbee);
     print(getCmdPromptMsg());
     scan("%d\n", &userInput); // Get input from terminal
-    if(userInput != -1){
-        //dprint(xbee, "You typed: %c\n", userInput);
-        if(userInput == 1){
+    if(userInput == 5){
+      print("Exiting program!");
+      break;   
+    }else{
+              if(userInput == 0){
+          //Stop Driving
+          stop();
+        }else if(userInput == 1){
           print('Driving forward');
           driveForward();
         }else if(userInput == '2'){
@@ -158,10 +162,7 @@ int main(){
           testPing(12);
         }else if(userInput == 4){
           driveAutonomously();
-        }else if(userInput == 9){
-          //Stop Driving
-          stop();
-        }          
-     }
+        }    
+    }      
   }
 }  
