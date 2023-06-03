@@ -57,3 +57,8 @@ cmm/*
 
 #ide
 .idea
+
+#eclipse
+.cproject
+.project
+.settings
