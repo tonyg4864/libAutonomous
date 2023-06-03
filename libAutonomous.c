@@ -150,7 +150,7 @@ int main(){
       print("Exiting program!");
       break;   
     }else{
-              if(userInput == 0){
+        if(userInput == 0){
           //Stop Driving
           stop();
         }else if(userInput == 1){
