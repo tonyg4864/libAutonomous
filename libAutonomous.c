@@ -147,20 +147,23 @@ int main(){
     print(getCmdPromptMsg());
     scan("%d\n", &userInput); // Get input from terminal
     if(userInput == 5){
-      print("Exiting program!");
+      print("Exiting program!\n");
       break;   
     }else{
         if(userInput == 0){
-          //Stop Driving
+          print("You entered: 0: Stop Driving...\n");
           stop();
         }else if(userInput == 1){
-          print('Driving forward');
+          print("You entered: 1: Driving forward...\n");
           driveForward();
         }else if(userInput == '2'){
+          print("You entered: 2: Testing servo...\n");
           testServo(17);
-        }else if(userInput == '3'){
+        }else if(userInput == "3"){
+          print("You entered: 3: Testing Ping...\n");
           testPing(12);
         }else if(userInput == 4){
+          print("You entered: 4: Driving Autonomously...\n");
           driveAutonomously();
         }    
     }      
