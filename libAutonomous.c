@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define TABLE_SIZE 5
+#define TABLE_SIZE 6
 
 int FORWARD_DISTANCE_THRESHOLD = 100;
 int DIRECTION_CHANGE_DURATION_MS = 1000;
@@ -119,7 +119,8 @@ char* getCmdPromptMsg(){
   insert(2, "Test Servo");
   insert(3, "Test Pinger");
   insert(4, "Drive Autonomously");
-  insert(5, "Exit");
+  insert(5, "Initialize");
+  insert(6, "Exit");
   
   char *intro = "Type a command from one of the following options:\n";
   char fullMsg[500] = "";
@@ -133,11 +134,16 @@ char* getCmdPromptMsg(){
   return fullMsg;
 }  
 
-int main(){
-  //Setup fdserial
+bool initialize(){
+    //Setup fdserial
   print("hb-25 initialization starting...\n");
   hb25InitAll();
   print("hb-25 initialization completed.\n");
+  return true;
+}
+  
+int main(){
+  bool initialized = false;
 
   int frontDistance = 0;
   int userInput;
@@ -146,26 +152,30 @@ int main(){
     userInput = -1;
     print(getCmdPromptMsg());
     scan("%d\n", &userInput); // Get input from terminal
-    if(userInput == 5){
+    if(userInput == 6){
       print("Exiting program!\n");
       break;   
     }else{
+      
         if(userInput == 0){
           print("You entered: 0: Stop Driving...\n");
           stop();
         }else if(userInput == 1){
           print("You entered: 1: Driving forward...\n");
           driveForward();
-        }else if(userInput == '2'){
+        }else if(userInput == 2){
           print("You entered: 2: Testing servo...\n");
           testServo(17);
-        }else if(userInput == "3"){
+        }else if(userInput == 3){
           print("You entered: 3: Testing Ping...\n");
           testPing(12);
         }else if(userInput == 4){
           print("You entered: 4: Driving Autonomously...\n");
           driveAutonomously();
-        }    
+        }else if(userInput == 5){         
+          print("You entered: 5: Initialize...\n");
+          initialized = initialize();
+        }          
     }      
   }
 }  
