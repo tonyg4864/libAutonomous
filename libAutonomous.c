@@ -18,7 +18,7 @@
 #include <string.h>
 #define TABLE_SIZE 6
 
-int FORWARD_DISTANCE_THRESHOLD = 100;
+int FORWARD_DISTANCE_THRESHOLD = 50;
 int DIRECTION_CHANGE_DURATION_MS = 1000;
 //8.28 volts draw
 //.11 amps at idle draw and 5.79 amps with all 6 wheels running and 1.54 one side running .74 volts on the signal cable
@@ -28,10 +28,13 @@ int DIRECTION_CHANGE_DURATION_MS = 1000;
 char findNewDirection(){
   rotateCenter(HEAD_SERVO_PIN);
   int centerDistance = getPingCMDistance(PINGER_PIN);
+  printf("----Center distance of: %dcm\n", centerDistance);
   rotateLeft(HEAD_SERVO_PIN);
   int leftDistance = getPingCMDistance(PINGER_PIN);
+  printf("----Left distance of: %dcm\n", leftDistance);
   rotateRight(HEAD_SERVO_PIN);
   int rightDistance = getPingCMDistance(PINGER_PIN);
+  printf("----Right distance of: %dcm\n", rightDistance);
   rotateCenter(HEAD_SERVO_PIN);
   if(leftDistance > rightDistance){
     return 'l';
@@ -52,6 +55,7 @@ void driveAutonomously(){
             pause(DIRECTION_CHANGE_DURATION_MS);
             stop();
             char newDirection = findNewDirection();
+            printf("---New Direction: %c", newDirection);
             if(newDirection == 'l'){
                 spinLeft();
                 pause(DIRECTION_CHANGE_DURATION_MS);
@@ -162,7 +166,12 @@ int main(){
           stop();
         }else if(userInput == 1){
           print("You entered: 1: Driving forward...\n");
-          driveForward();
+          char dir = findNewDirection();
+          printf("The new direction: %c\n", dir);
+          //getPingCMDistance(PINGER_PIN);
+          //rightWheelsForward();
+          //leftWheelsForward();
+          //driveForward();
         }else if(userInput == 2){
           print("You entered: 2: Testing servo...\n");
           testServo(17);
