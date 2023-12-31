@@ -55,7 +55,7 @@ void driveAutonomously(){
             pause(DIRECTION_CHANGE_DURATION_MS);
             stop();
             char newDirection = findNewDirection();
-            printf("---New Direction: %c", newDirection);
+            printf("---New Direction: %c\n", newDirection);
             if(newDirection == 'l'){
                 spinLeft();
                 pause(DIRECTION_CHANGE_DURATION_MS);
@@ -168,6 +168,7 @@ int main(){
           print("You entered: 1: Driving forward...\n");
           char dir = findNewDirection();
           printf("The new direction: %c\n", dir);
+          spinRight();
           //getPingCMDistance(PINGER_PIN);
           //rightWheelsForward();
           //leftWheelsForward();
