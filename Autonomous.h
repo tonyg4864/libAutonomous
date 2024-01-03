@@ -5,3 +5,4 @@
 
 void awesome(void);
 void epic(void);
+char leftOrRight(int leftDistance, int rightDistance);

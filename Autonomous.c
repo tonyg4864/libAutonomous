@@ -9,3 +9,11 @@ void epic(void)                               // epic function
 {
   print(" is epic!\n");
 }
+
+char leftOrRight(int leftD, int rightD){
+  if(leftD > rightD){
+    return 'l';
+  }else{
+    return 'r';
+  }
+}

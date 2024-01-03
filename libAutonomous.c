@@ -18,7 +18,7 @@
 #include <string.h>
 #define TABLE_SIZE 6
 
-int FORWARD_DISTANCE_THRESHOLD = 50;
+int FORWARD_DISTANCE_THRESHOLD = 60;
 int DIRECTION_CHANGE_DURATION_MS = 1000;
 //8.28 volts draw
 //.11 amps at idle draw and 5.79 amps with all 6 wheels running and 1.54 one side running .74 volts on the signal cable
@@ -42,6 +42,38 @@ char findNewDirection(){
     return 'r';
   }    
 }
+
+char findNewDirectionV2(int centerDistance){
+  //If centerDistance is not provided, then find it.
+  if(centerDistance == -1){
+    rotateCenter(HEAD_SERVO_PIN);
+    centerDistance = getPingCMDistance(PINGER_PIN);
+  }  
+  printf("----Center distance of: %dcm\n", centerDistance);
+  rotateLeft(HEAD_SERVO_PIN);
+  int leftDistance = getPingCMDistance(PINGER_PIN);
+  printf("----Left distance of: %dcm\n", leftDistance);
+  rotateRight(HEAD_SERVO_PIN);
+  int rightDistance = getPingCMDistance(PINGER_PIN);
+  printf("----Right distance of: %dcm\n", rightDistance);
+  rotateCenter(HEAD_SERVO_PIN);
+  if(leftDistance <= FORWARD_DISTANCE_THRESHOLD && rightDistance <= FORWARD_DISTANCE_THRESHOLD){
+    printf("****Entered breakout mode****\n");
+    return 'u';
+  }  
+  return leftOrRight(leftDistance, rightDistance);
+}
+
+void makeUTurn(){
+  int i = 0;
+  while(i <= 8){
+    driveBackwards();
+    spinRight();
+    pause(1000);
+    stop();
+    i++;
+  }  
+}
   
 void driveAutonomously(){
     //reset
@@ -51,25 +83,36 @@ void driveAutonomously(){
         int forwardDistance = getPingCMDistance(PINGER_PIN);
         while(forwardDistance < FORWARD_DISTANCE_THRESHOLD){
             stop();
-            driveReverse();
-            pause(DIRECTION_CHANGE_DURATION_MS);
-            stop();
-            char newDirection = findNewDirection();
+            char newDirection = findNewDirectionV2(forwardDistance);
             printf("---New Direction: %c\n", newDirection);
             if(newDirection == 'l'){
-                spinLeft();
-                pause(DIRECTION_CHANGE_DURATION_MS);
-                stop();
+              //drive back a little bit first to create room to turn.
+               driveBackwards();
+               spinLeft();
+               pause(DIRECTION_CHANGE_DURATION_MS);
+               stop();
             }else if(newDirection == 'r'){
-                spinRight();
-                pause(DIRECTION_CHANGE_DURATION_MS);
-                stop();
-            }
+               //drive back a little bit first to create room to turn.
+               driveBackwards();
+               spinRight();
+               pause(DIRECTION_CHANGE_DURATION_MS);
+               stop();
+            }else if(newDirection == 'b'){
+              driveBackwards();
+            }else if(newDirection == 'u'){
+              makeUTurn();          
+            }          
             forwardDistance = getPingCMDistance(PINGER_PIN);
         }
         driveForward();
     }
 }
+
+void driveBackwards(){
+  driveReverse();
+  pause(DIRECTION_CHANGE_DURATION_MS);
+  stop();
+}  
 
 
 //Hashmap TODO: factor out
@@ -166,9 +209,12 @@ int main(){
           stop();
         }else if(userInput == 1){
           print("You entered: 1: Driving forward...\n");
-          char dir = findNewDirection();
-          printf("The new direction: %c\n", dir);
-          spinRight();
+          //char dir = findNewDirectionV2(-1);
+          //printf("The new direction: %c\n", dir);
+          ////////////////
+          makeUTurn();
+          /////////////
+          //spinRight();
           //getPingCMDistance(PINGER_PIN);
           //rightWheelsForward();
           //leftWheelsForward();
