@@ -77,9 +77,9 @@ void makeUTurn(){
   
 void driveAutonomously(){
     //reset
-    stop();
-    rotateCenter(HEAD_SERVO_PIN);
+    //stop();
     while(1){
+        rotateCenter(HEAD_SERVO_PIN);
         int forwardDistance = getPingCMDistance(PINGER_PIN);
         while(forwardDistance < FORWARD_DISTANCE_THRESHOLD){
             stop();
@@ -197,6 +197,7 @@ int main(){
 
   while(1){
     userInput = -1;
+    int *autonomousCog;
     print(getCmdPromptMsg());
     scan("%d\n", &userInput); // Get input from terminal
     if(userInput == 6){
@@ -206,6 +207,7 @@ int main(){
       
         if(userInput == 0){
           print("You entered: 0: Stop Driving...\n");
+          cog_end(autonomousCog);
           stop();
         }else if(userInput == 1){
           print("You entered: 1: Driving forward...\n");
@@ -227,7 +229,8 @@ int main(){
           testPing(12);
         }else if(userInput == 4){
           print("You entered: 4: Driving Autonomously...\n");
-          driveAutonomously();
+          autonomousCog = cog_run(driveAutonomously, 128);
+          //driveAutonomously();
         }else if(userInput == 5){         
           print("You entered: 5: Initialize...\n");
           initialized = initialize();
